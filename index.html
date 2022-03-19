@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag and drop with ts and local storage</title>
+  </head>
+  <body class="bg-gray-900 p-8">
+    <div class="mt-16">
+      <div
+        class="px-4 py-8 mx-auto max-w-md bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700"
+      >
+        <h3 class="mb-4 text-white text-lg">Project manager</h3>
+
+        <!-- form -->
+        <form id="project-form" class="flex justify-between">
+          <input
+            type="text"
+            placeholder="Add new project..."
+            class="w-full p-2 rounded-l bg-inherit border-gray-300 border-y border-l text-white"
+            id="project-input"
+          />
+
+          <button
+            data-btn-type="add"
+            type="submit"
+            class="px-4 border-y border border-gray-300 rounded-r bg-green-700 text-white"
+            id="project-btn"
+          >
+            Add
+          </button>
+        </form>
+
+        <!-- list -->
+        <ul
+          id="project-list"
+          role="list"
+          class="mt-4 divide-y divide-gray-200 dark:divide-gray-700"
+        >
+          <!-- list item here -->
+        </ul>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
