@@ -1,13 +1,27 @@
-import { els } from './utils';
+import { superRender } from './main';
+import { els, tempElement, useStorage } from './utils';
 
-let dragSrcElement;
+const [getProjects, setProject] = useStorage('projects');
 
+const getSort = (id) => {
+  return getProjects().find((project) => project.id == id).sort;
+};
+
+const editSort = (id, sort) => {
+  let projects = getProjects().map((project) => {
+    return project.id == id ? { ...project, sort } : project;
+  });
+
+  setProject(projects);
+};
+
+/**
+ * @param {HTMLElement} element
+ */
 export const addDragAndDropEvents = (element) => {
   if (element) {
     element.addEventListener('dragstart', (e) => {
       element.style.opacity = '0.5';
-
-      if (element) dragSrcElement = element;
 
       e.dataTransfer?.setData('dragSrcElement', element.innerHTML);
 
@@ -32,11 +46,20 @@ export const addDragAndDropEvents = (element) => {
     });
 
     element.addEventListener('drop', (e) => {
-      if (dragSrcElement !== element) {
-        dragSrcElement.innerHTML = element.innerHTML;
+      let temp = tempElement(e.dataTransfer.getData('text/html'));
 
-        element.innerHTML = e.dataTransfer.getData('text/html');
-      }
+      let oldItemID =
+        element.firstElementChild.getAttribute('data-draggable-id');
+      let newItemID = temp.getAttribute('data-draggable-id');
+
+      let oldSort = getSort(oldItemID);
+      let newSort = getSort(newItemID);
+
+      // edit sort
+      editSort(newItemID, oldSort);
+      editSort(oldItemID, newSort);
+
+      element.innerHTML = e.dataTransfer.getData('text/html');
     });
 
     element.addEventListener('dragend', () => {
@@ -45,8 +68,8 @@ export const addDragAndDropEvents = (element) => {
       });
       element.style.opacity = '1';
 
-      // reRender all element
-      // superRender();
+      // reRender all element for new sort
+      superRender();
     });
   }
 };
